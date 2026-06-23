@@ -43,6 +43,11 @@ public class UserService {
         // Obtém o objeto UserDetails do usuário autenticado
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
+        User user = userRepository.findByEmail(loginUserDto.email()).orElse(null);
+        user.setLast_accessed(LocalDateTime.now());
+
+        userRepository.save(user);
+
         // Gera um token JWT para o usuário autenticado
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
     }

@@ -40,6 +40,10 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime last_accessed;
 
+    public void setLast_accessed(LocalDateTime last_accessed) {
+        this.last_accessed = last_accessed;
+    }
+
     @Column(nullable = false)
     private String url_photo;
 
