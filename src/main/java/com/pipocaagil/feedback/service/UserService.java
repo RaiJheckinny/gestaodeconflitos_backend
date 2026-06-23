@@ -47,7 +47,7 @@ public class UserService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         User user = userRepository.findByEmail(loginUserDto.email()).orElse(null);
-        user.setLast_accessed(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+        user.setLast_accessed(LocalDateTime.now());
 
         userRepository.save(user);
 
@@ -67,7 +67,7 @@ public class UserService {
                 .url_photo("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
                 .name(createUserDto.name())
                 .department(createUserDto.department())
-                .last_accessed(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .last_accessed(LocalDateTime.now())
                 // Atribui ao usuário uma permissão específica
                 .roles(List.of(Role.builder().name(createUserDto.role()).build()))
                 .build();
