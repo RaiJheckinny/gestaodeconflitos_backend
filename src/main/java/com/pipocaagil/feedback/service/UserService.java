@@ -6,6 +6,7 @@ import com.pipocaagil.feedback.security.UserDetailsImpl;
 import com.pipocaagil.feedback.security.configuration.SecurityConfiguration;
 import com.pipocaagil.feedback.users.User;
 import com.pipocaagil.feedback.users.dto.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +33,7 @@ public class UserService {
     private SecurityConfiguration securityConfiguration;
 
     // Método responsável por autenticar um usuário e retornar um token JWT
+    @Transactional
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
         // Cria um objeto de autenticação com o email e a senha do usuário
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
