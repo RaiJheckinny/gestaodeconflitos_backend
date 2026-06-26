@@ -16,7 +16,16 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<RecoveryJwtTokenDto> authenticateUser(@RequestBody LoginUserDto loginUserDto) {
+        // 1. Verifica se o e-mail existe usando o seu método do Service
+        boolean emailExiste = userService.verificarSeEmailExiste(loginUserDto);
+
+        if (!emailExiste) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         RecoveryJwtTokenDto token = userService.authenticateUser(loginUserDto);
+
+        userService.atualizarAcessoUsuario(loginUserDto);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 

@@ -34,7 +34,6 @@ public class UserService {
     private SecurityConfiguration securityConfiguration;
 
     // Método responsável por autenticar um usuário e retornar um token JWT
-    @Transactional
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
         // Cria um objeto de autenticação com o email e a senha do usuário
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -46,13 +45,32 @@ public class UserService {
         // Obtém o objeto UserDetails do usuário autenticado
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        User user = userRepository.findByEmail(loginUserDto.email()).orElse(null);
-        user.setLast_accessed(LocalDateTime.now());
-
-        userRepository.save(user);
-
         // Gera um token JWT para o usuário autenticado
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
+    }
+    // Método exclusivo do Service para testar o e-mail
+    public boolean verificarSeEmailExiste(LoginUserDto loginUserDto) {
+        // Procura o usuário pelo e-mail enviado no DTO
+        User user = userRepository.findByEmail(loginUserDto.email()).orElse(null);
+
+        // Retorna true se o usuário existir, ou false se for nulo (não existe)
+        return user != null;
+    }
+
+    @Transactional
+    public void atualizarAcessoUsuario(LoginUserDto loginUserDto) {
+        // 1. Busca o usuário pelo e-mail do DTO
+        User user = userRepository.findByEmail(loginUserDto.email())
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.NOT_FOUND, "Usuário não encontrado no atualizar utimo login."
+                ));
+
+        // 2. Pega o LocalDateTime travado no fuso de São Paulo
+        LocalDateTime localDateTimeSaoPaulo = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
+
+        // 3. Atualiza o campo e salva no banco de dados
+        user.setLast_accessed(localDateTimeSaoPaulo);
+        userRepository.save(user);
     }
 
     // Método responsável por criar um usuário
@@ -67,7 +85,7 @@ public class UserService {
                 .url_photo("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
                 .name(createUserDto.name())
                 .department(createUserDto.department())
-                .last_accessed(LocalDateTime.now())
+                .last_accessed(LocalDateTime.now().minusHours(3))
                 // Atribui ao usuário uma permissão específica
                 .roles(List.of(Role.builder().name(createUserDto.role()).build()))
                 .build();
