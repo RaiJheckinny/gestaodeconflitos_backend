@@ -36,6 +36,7 @@ public class OccurrenceService {
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
                 .dateNow(LocalDateTime.now().minusHours(3))
                 .status("Aguardando mediação")
+                .title(createOccurrenceDto.title())
                 .build();
 
         // Salva o novo ocorrencia no banco de dados

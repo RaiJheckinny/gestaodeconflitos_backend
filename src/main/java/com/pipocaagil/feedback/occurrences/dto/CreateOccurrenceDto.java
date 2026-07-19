@@ -11,6 +11,7 @@ public record CreateOccurrenceDto (
         List<String> involvedEmployee,
         String description,
         List<String> urlFile,
-        String email
+        String email,
+        String title
 ){
 }

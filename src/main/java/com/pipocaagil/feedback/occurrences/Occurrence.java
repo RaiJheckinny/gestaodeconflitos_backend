@@ -37,6 +37,8 @@ public class Occurrence {
 
     private String status;
 
+    private String title;
+
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email")
     private User user;

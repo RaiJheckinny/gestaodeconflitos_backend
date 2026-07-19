@@ -15,7 +15,8 @@ public record RecoveryOccurrenceDto(
         List<String> urlFile,
         LocalDateTime datenow,
         UUID protocol,
-        String status
+        String status,
+        String title
 ) {
     public RecoveryOccurrenceDto(Occurrence occurrence) {
         this(
@@ -26,7 +27,9 @@ public record RecoveryOccurrenceDto(
                 occurrence.getUrlFile(),
                 occurrence.getDateNow(),
                 occurrence.getProtocol(),
-                occurrence.getStatus()
+                occurrence.getStatus(),
+                occurrence.getTitle()
+
         );
     }
 }
