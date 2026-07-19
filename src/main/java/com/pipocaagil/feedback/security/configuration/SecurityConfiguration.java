@@ -31,7 +31,8 @@ public class SecurityConfiguration {
             "/users/perfil", // Busca e retorna um usuario passando o email
             "/users/perfil/occurrence/create",
             "/users/perfil/occurrence/getRecent",
-            "/users/perfil/occurrence/getAll"
+            "/users/perfil/occurrence/getAll",
+            "/users/perfil/userNameEmail"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente

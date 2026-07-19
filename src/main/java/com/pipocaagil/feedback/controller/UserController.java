@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -55,6 +57,13 @@ public class UserController {
     @GetMapping("/test/administrator")
     public ResponseEntity<String> getAdminAuthenticationTest() {
         return new ResponseEntity<>("Administrador autenticado com sucesso", HttpStatus.OK);
+    }
+
+    @GetMapping("/perfil/userNameEmail")
+    public ResponseEntity<List<RecoveryUserEmailNameDTO>> getUser() {
+        List<RecoveryUserEmailNameDTO> recoveryUserEmailNameDto = userService.getUserEmailName();
+
+        return new ResponseEntity<>(recoveryUserEmailNameDto, HttpStatus.OK);
     }
 
 }

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -105,4 +105,19 @@ public class UserService {
 
         return new RecoveryUserDto(user);
     };
+
+    public List<RecoveryUserEmailNameDTO> getUserEmailName(){
+        List<User> users = userRepository.findAll();
+        List<RecoveryUserEmailNameDTO> userEmailName = new ArrayList<>();
+
+        for (User user : users) {
+            userEmailName.add(
+                    new RecoveryUserEmailNameDTO(
+                            user.getName(),
+                            user.getEmail()
+                    )
+            );
+        }
+        return userEmailName;
+    }
 }
