@@ -4,6 +4,7 @@ import com.pipocaagil.feedback.occurrences.File;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.occurrences.dto.CreateOccurrenceDto;
 import com.pipocaagil.feedback.occurrences.dto.RecoveryOccurrenceDto;
+import com.pipocaagil.feedback.repository.FileRepository;
 import com.pipocaagil.feedback.repository.OccurrenceRepository;
 import com.pipocaagil.feedback.repository.UserRepository;
 import com.pipocaagil.feedback.users.User;
@@ -18,6 +19,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class OccurrenceService {
     @Autowired
@@ -25,6 +28,9 @@ public class OccurrenceService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     // Cria um novo ocorrencia com os dados fornecidos
     public void createOccurrence(CreateOccurrenceDto createOccurrenceDto) {
@@ -40,17 +46,19 @@ public class OccurrenceService {
                 .title(createOccurrenceDto.title())
                 .build();
 
-        List<File> files = createOccurrenceDto.listFile().stream()
-                .map(fileDto -> File.builder()
-                        .urlFile(fileDto.urlFile())
-                        .urlName(fileDto.urlName())
-                        .occurrence(occurrence)
-                        .build())
-                .toList();
-
-        occurrence.setListFile(files);
-
         occurrenceRepository.save(occurrence);
+
+        List<File> files = createOccurrenceDto.listFile().stream()
+                .map(fileDto -> {
+                    File file = File.builder()
+                            .urlFile(fileDto.urlFile())
+                            .urlName(fileDto.urlName())
+                            .occurrence(occurrence)
+                            .build();
+
+                    return fileRepository.save(file);
+                })
+                .toList();
     }
 
     // Pega uma list das ocorrencias do usuario que passou o email
