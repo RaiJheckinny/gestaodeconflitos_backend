@@ -113,8 +113,8 @@ public class UserService {
         for (User user : users) {
             userEmailName.add(
                     new RecoveryUserEmailNameDTO(
-                            user.getName(),
-                            user.getEmail()
+                            user.getEmail(),
+                            user.getName()
                     )
             );
         }
