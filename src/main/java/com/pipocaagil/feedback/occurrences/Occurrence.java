@@ -20,8 +20,8 @@ import java.util.UUID;
 public class Occurrence {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long protocol;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID protocol;
 
     private LocalDateTime dateEvent;
 

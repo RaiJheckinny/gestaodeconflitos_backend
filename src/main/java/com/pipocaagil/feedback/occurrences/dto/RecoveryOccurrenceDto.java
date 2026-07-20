@@ -13,7 +13,7 @@ public record RecoveryOccurrenceDto(
         String description,
         List<FileDTO> listFile,
         LocalDateTime datenow,
-        Long protocol,
+        UUID protocol,
         String status,
         String title
 ) {
