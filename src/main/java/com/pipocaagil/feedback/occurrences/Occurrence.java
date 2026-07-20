@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.occurrences;
 
+import com.pipocaagil.feedback.occurrences.dto.FileDTO;
 import com.pipocaagil.feedback.users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class Occurrence {
 
     private String description;
 
-    private List<String> urlFile;
+    private List<FileDTO> listFile;
 
     private String status;
 
