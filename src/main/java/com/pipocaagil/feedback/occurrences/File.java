@@ -18,7 +18,7 @@ public class File {
 
     private String urlName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "occurrence_id")
     private Occurrence occurrence;
 }

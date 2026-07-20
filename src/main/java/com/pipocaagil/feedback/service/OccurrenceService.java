@@ -34,19 +34,21 @@ public class OccurrenceService {
                 .location(createOccurrenceDto.location())
                 .involvedEmployee(createOccurrenceDto.involvedEmployee())
                 .description(createOccurrenceDto.description())
-                .listFile(
-                        createOccurrenceDto.listFile().stream()
-                                .map(fileDto -> File.builder()
-                                        .urlFile(fileDto.urlFile())
-                                        .urlName(fileDto.urlName())
-                                        .build())
-                                .toList()
-                )
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
                 .dateNow(LocalDateTime.now().minusHours(3))
                 .status("Aguardando mediação")
                 .title(createOccurrenceDto.title())
                 .build();
+
+        List<File> files = createOccurrenceDto.listFile().stream()
+                .map(fileDto -> File.builder()
+                        .urlFile(fileDto.urlFile())
+                        .urlName(fileDto.urlName())
+                        .occurrence(occurrence)
+                        .build())
+                .toList();
+
+        occurrence.setListFile(files);
 
         occurrenceRepository.save(occurrence);
     }

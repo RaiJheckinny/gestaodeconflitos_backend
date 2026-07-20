@@ -3,10 +3,7 @@ package com.pipocaagil.feedback.occurrences;
 import com.pipocaagil.feedback.occurrences.dto.FileDTO;
 import com.pipocaagil.feedback.users.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class Occurrence {
 
     @Id
@@ -36,7 +34,7 @@ public class Occurrence {
     private String description;
 
     @OneToMany(mappedBy = "occurrence", cascade = CascadeType.ALL)
-    private List<File> listFile = new ArrayList<>();
+    private List<File> listFile;
 
     private String status;
 
