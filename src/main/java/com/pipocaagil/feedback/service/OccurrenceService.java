@@ -29,19 +29,19 @@ public class OccurrenceService {
     // Cria um novo ocorrencia com os dados fornecidos
     public void createOccurrence(CreateOccurrenceDto createOccurrenceDto) {
 
-        List<File> files = createOccurrenceDto.listFile().stream()
-                .map(fileDto -> File.builder()
-                        .urlFile(fileDto.urlFile())
-                        .urlName(fileDto.urlName())
-                        .build())
-                .toList();
-
         Occurrence occurrence = Occurrence.builder()
                 .dateEvent(createOccurrenceDto.dateEvent())
                 .location(createOccurrenceDto.location())
                 .involvedEmployee(createOccurrenceDto.involvedEmployee())
                 .description(createOccurrenceDto.description())
-                .listFile(files)
+                .listFile(
+                        createOccurrenceDto.listFile().stream()
+                                .map(fileDto -> File.builder()
+                                        .urlFile(fileDto.urlFile())
+                                        .urlName(fileDto.urlName())
+                                        .build())
+                                .toList()
+                )
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
                 .dateNow(LocalDateTime.now().minusHours(3))
                 .status("Aguardando mediação")

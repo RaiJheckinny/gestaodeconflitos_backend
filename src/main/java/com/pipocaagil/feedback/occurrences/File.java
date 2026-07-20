@@ -1,10 +1,7 @@
 package com.pipocaagil.feedback.occurrences;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
@@ -21,7 +18,7 @@ public class File {
 
     private String urlName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "occurrence_id")
     private Occurrence occurrence;
 }
