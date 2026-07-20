@@ -13,7 +13,7 @@ public record RecoveryOccurrenceDto(
         String description,
         List<FileDTO> listFile,
         LocalDateTime datenow,
-        UUID protocol,
+        Long protocol,
         String status,
         String title
 ) {
@@ -23,12 +23,16 @@ public record RecoveryOccurrenceDto(
                 occurrence.getLocation(),
                 occurrence.getInvolvedEmployee(),
                 occurrence.getDescription(),
-                occurrence.getListFile(),
+                occurrence.getListFile().stream()
+                        .map(file -> new FileDTO(
+                                file.getUrlFile(),
+                                file.getUrlName()
+                        ))
+                        .toList(),
                 occurrence.getDateNow(),
                 occurrence.getProtocol(),
                 occurrence.getStatus(),
                 occurrence.getTitle()
-
         );
     }
 }

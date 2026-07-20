@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,8 +22,8 @@ import java.util.UUID;
 public class Occurrence {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID protocol;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long protocol;
 
     private LocalDateTime dateEvent;
 
@@ -34,7 +35,8 @@ public class Occurrence {
 
     private String description;
 
-    private List<FileDTO> listFile;
+    @OneToMany(mappedBy = "occurrence", cascade = CascadeType.ALL)
+    private List<File> listFile = new ArrayList<>();
 
     private String status;
 

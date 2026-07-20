@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface OccurrenceRepository extends JpaRepository<Occurrence, UUID> {
+public interface OccurrenceRepository extends JpaRepository<Occurrence, Long> {
     List<Occurrence> findByUserEmailOrderByDateNowDesc(String email);
     Occurrence findFirstByUserEmailOrderByDateNowDesc(String email);
 }

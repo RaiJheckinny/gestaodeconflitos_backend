@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.service;
 
+import com.pipocaagil.feedback.occurrences.File;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.occurrences.dto.CreateOccurrenceDto;
 import com.pipocaagil.feedback.occurrences.dto.RecoveryOccurrenceDto;
@@ -27,19 +28,26 @@ public class OccurrenceService {
 
     // Cria um novo ocorrencia com os dados fornecidos
     public void createOccurrence(CreateOccurrenceDto createOccurrenceDto) {
+
+        List<File> files = createOccurrenceDto.listFile().stream()
+                .map(fileDto -> File.builder()
+                        .urlFile(fileDto.urlFile())
+                        .urlName(fileDto.urlName())
+                        .build())
+                .toList();
+
         Occurrence occurrence = Occurrence.builder()
                 .dateEvent(createOccurrenceDto.dateEvent())
                 .location(createOccurrenceDto.location())
                 .involvedEmployee(createOccurrenceDto.involvedEmployee())
                 .description(createOccurrenceDto.description())
-                .urlFile(createOccurrenceDto.urlFile())
+                .listFile(files)
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
                 .dateNow(LocalDateTime.now().minusHours(3))
                 .status("Aguardando mediação")
                 .title(createOccurrenceDto.title())
                 .build();
 
-        // Salva o novo ocorrencia no banco de dados
         occurrenceRepository.save(occurrence);
     }
 
