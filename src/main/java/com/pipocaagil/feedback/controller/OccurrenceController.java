@@ -2,6 +2,7 @@ package com.pipocaagil.feedback.controller;
 
 import com.pipocaagil.feedback.occurrences.dto.CreateOccurrenceDto;
 import com.pipocaagil.feedback.occurrences.dto.RecoveryOccurrenceDto;
+import com.pipocaagil.feedback.occurrences.dto.RecoveryUUIDDto;
 import com.pipocaagil.feedback.occurrences.dto.UuidOccurrenceDto;
 import com.pipocaagil.feedback.service.OccurrenceService;
 import com.pipocaagil.feedback.users.dto.CreateUserDto;
@@ -22,9 +23,9 @@ public class OccurrenceController {
     OccurrenceService occurrenceService;
 
     @PostMapping("/perfil/occurrence/create")
-    public ResponseEntity<Void> createOccurrence(@RequestBody CreateOccurrenceDto createOccurrence) {
-        occurrenceService.createOccurrence(createOccurrence);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<RecoveryUUIDDto> createOccurrence(@RequestBody CreateOccurrenceDto createOccurrence) {
+        RecoveryUUIDDto uuidDto = occurrenceService.createOccurrence(createOccurrence);
+        return new ResponseEntity<>(uuidDto,HttpStatus.CREATED);
     }
 
     @PostMapping("/perfil/occurrence/submissionforreview")
@@ -36,6 +37,12 @@ public class OccurrenceController {
     @GetMapping("/perfil/occurrence/getRecent")
     public ResponseEntity<RecoveryOccurrenceDto> getOccurrenceRecent(EmailUserDTO emailUserDTO) {
         RecoveryOccurrenceDto recoveryOccurrenceDto = new RecoveryOccurrenceDto(occurrenceService.getOccurrenceRecent(emailUserDTO));
+        return new ResponseEntity<>(recoveryOccurrenceDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/perfil/occurrence/getUUID")
+    public ResponseEntity<RecoveryOccurrenceDto> getOccurrenceRecent(UuidOccurrenceDto uuidOccurrenceDto) {
+        RecoveryOccurrenceDto recoveryOccurrenceDto = new RecoveryOccurrenceDto(occurrenceService.getOccurrenceUUid(uuidOccurrenceDto));
         return new ResponseEntity<>(recoveryOccurrenceDto, HttpStatus.OK);
     }
 

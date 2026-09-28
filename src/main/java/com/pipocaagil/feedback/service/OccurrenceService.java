@@ -4,6 +4,7 @@ import com.pipocaagil.feedback.occurrences.File;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.occurrences.dto.CreateOccurrenceDto;
 import com.pipocaagil.feedback.occurrences.dto.RecoveryOccurrenceDto;
+import com.pipocaagil.feedback.occurrences.dto.RecoveryUUIDDto;
 import com.pipocaagil.feedback.occurrences.dto.UuidOccurrenceDto;
 import com.pipocaagil.feedback.repository.FileRepository;
 import com.pipocaagil.feedback.repository.OccurrenceRepository;
@@ -35,7 +36,7 @@ public class OccurrenceService {
     private FileRepository fileRepository;
 
     // Cria um novo ocorrencia com os dados fornecidos
-    public void createOccurrence(CreateOccurrenceDto createOccurrenceDto) {
+    public RecoveryUUIDDto createOccurrence(CreateOccurrenceDto createOccurrenceDto) {
 
         Occurrence occurrence = Occurrence.builder()
                 .dateEvent(createOccurrenceDto.dateEvent())
@@ -48,8 +49,10 @@ public class OccurrenceService {
                 .title(createOccurrenceDto.title())
                 .build();
 
+        if (!createOccurrenceDto.protocol().equals(null)){
+            occurrence.setProtocol(createOccurrenceDto.protocol());
+        }
         occurrenceRepository.save(occurrence);
-
         List<File> files = createOccurrenceDto.listFile().stream()
                 .map(fileDto -> {
                     File file = File.builder()
@@ -61,6 +64,7 @@ public class OccurrenceService {
                     return fileRepository.save(file);
                 })
                 .toList();
+        return new RecoveryUUIDDto(occurrence.getProtocol());
     }
 
     public void updateOcurrenceAnalise(UuidOccurrenceDto protocol){
@@ -82,5 +86,9 @@ public class OccurrenceService {
     //Pega a Ocorrencia mais recente cadastrada no banco
     public Occurrence getOccurrenceRecent(EmailUserDTO emailUserDTO){
         return occurrenceRepository.findFirstByUserEmailOrderByDateNowDesc(emailUserDTO.email());
+    }
+
+    public Occurrence getOccurrenceUUid(UuidOccurrenceDto uuidOccurrenceDtoDTO){
+        return occurrenceRepository.findByProtocol(uuidOccurrenceDtoDTO.protocolo()).orElse(null);
     }
 }
