@@ -6,9 +6,9 @@ import com.pipocaagil.feedback.users.User;
 import java.util.UUID;
 
 public record RecoveryUUIDDto (
-        UUID protocolo
+        UUID protocol
 ){
-    public RecoveryUUIDDto(UUID protocolo) {
-        this.protocolo = protocolo;
+    public RecoveryUUIDDto(UUID protocol) {
+        this.protocol = protocol;
     }
 }

@@ -33,7 +33,7 @@ public class SecurityConfiguration {
             "/users/perfil/occurrence/getRecent",
             "/users/perfil/occurrence/getAll",
             "/users/perfil/userNameEmail",
-            "/users/perfil/occurrence/getUUID",
+            "/users/perfil/occurrence/getuuid*",
             "/users/perfil/occurrence/submissionforreview"
     };
 

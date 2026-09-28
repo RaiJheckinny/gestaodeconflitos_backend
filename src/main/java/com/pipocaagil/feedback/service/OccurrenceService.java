@@ -68,7 +68,7 @@ public class OccurrenceService {
     }
 
     public void updateOcurrenceAnalise(UuidOccurrenceDto protocol){
-        Occurrence occurrence = occurrenceRepository.findByProtocol(protocol.protocolo()).orElse(null);
+        Occurrence occurrence = occurrenceRepository.findByProtocol(protocol.protocol()).orElse(null);
         occurrence.setStatus("Aguardando Analise");
         occurrenceRepository.save(occurrence);
     }
@@ -88,7 +88,8 @@ public class OccurrenceService {
         return occurrenceRepository.findFirstByUserEmailOrderByDateNowDesc(emailUserDTO.email());
     }
 
-    public Occurrence getOccurrenceUUid(UuidOccurrenceDto uuidOccurrenceDtoDTO){
-        return occurrenceRepository.findByProtocol(uuidOccurrenceDtoDTO.protocolo()).orElse(null);
+    public Occurrence getOccurrenceUUid(UuidOccurrenceDto uuidOccurrenceDtoDTO) {
+        return occurrenceRepository.findByProtocol(uuidOccurrenceDtoDTO.protocol())
+                .orElseThrow(() -> new RuntimeException("Ocorrência não encontrada com o protocolo informado."));
     }
 }
