@@ -45,6 +45,6 @@ public class Occurrence {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "user_mediator_email", referencedColumnName = "email_mediator")
+    @JoinColumn(name = "user_mediator_email", referencedColumnName = "email")
     private User userMediator;
 }
