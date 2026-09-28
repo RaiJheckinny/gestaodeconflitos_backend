@@ -41,7 +41,7 @@ public class OccurrenceController {
     }
 
     @GetMapping("/perfil/occurrence/getUUID")
-    public ResponseEntity<RecoveryOccurrenceDto> getOccurrenceRecent(@PathVariable UuidOccurrenceDto uuidOccurrenceDto) {
+    public ResponseEntity<RecoveryOccurrenceDto> getOccurrenceRecent(UuidOccurrenceDto uuidOccurrenceDto) {
         RecoveryOccurrenceDto recoveryOccurrenceDto = new RecoveryOccurrenceDto(occurrenceService.getOccurrenceUUid(uuidOccurrenceDto));
         return new ResponseEntity<>(recoveryOccurrenceDto, HttpStatus.OK);
     }
