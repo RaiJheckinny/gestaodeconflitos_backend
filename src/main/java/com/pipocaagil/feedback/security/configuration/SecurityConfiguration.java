@@ -36,7 +36,7 @@ public class SecurityConfiguration {
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
-    public static final String [] ENDPOINTS_CUSTOMER = {
+    public static final String [] ENDPOINTS_COMUM = {
             "/users/test/customer",
     };
 
@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
                         .requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR")
-                        .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
+                        .requestMatchers(ENDPOINTS_COMUM).hasRole("COMUM")
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(
