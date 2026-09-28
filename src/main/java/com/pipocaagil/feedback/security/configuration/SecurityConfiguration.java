@@ -32,7 +32,9 @@ public class SecurityConfiguration {
             "/users/perfil/occurrence/create",
             "/users/perfil/occurrence/getRecent",
             "/users/perfil/occurrence/getAll",
-            "/users/perfil/userNameEmail"
+            "/users/perfil/userNameEmail",
+            "/users/perfil/occurrence/getUUID",
+            "/users/perfil/occurrence/submissionforreview"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
