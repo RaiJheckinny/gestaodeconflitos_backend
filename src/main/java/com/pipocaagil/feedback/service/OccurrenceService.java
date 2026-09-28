@@ -49,7 +49,7 @@ public class OccurrenceService {
                 .title(createOccurrenceDto.title())
                 .build();
 
-        if (!createOccurrenceDto.protocol().equals(null)){
+        if (createOccurrenceDto.protocol() != null) {
             occurrence.setProtocol(createOccurrenceDto.protocol());
         }
         occurrenceRepository.save(occurrence);
