@@ -45,8 +45,10 @@ public class UserService {
         // Obtém o objeto UserDetails do usuário autenticado
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
+        User user = userRepository.findByEmail(loginUserDto.email()).orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
+
         // Gera um token JWT para o usuário autenticado
-        return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
+        return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails), user.getRoles());
     }
     // Método exclusivo do Service para testar o e-mail
     public boolean verificarSeEmailExiste(LoginUserDto loginUserDto) {
