@@ -23,28 +23,34 @@ public class Occurrence {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID protocol;
 
+    @Column(nullable = false)
     private LocalDateTime dateEvent;
 
+    @Column(nullable = false)
     private LocalDateTime dateNow;
 
     private String location;
 
+    @Column(nullable = false)
     private List<String> involvedEmployee;
 
+    @Column(nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "occurrence", cascade = CascadeType.ALL)
     private List<File> listFile;
 
+    @Column(nullable = false)
     private String status;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private Boolean priorit;
+
+    @Column(nullable = false)
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "user_mediator_email", referencedColumnName = "email")
-    private User userMediator;
 }

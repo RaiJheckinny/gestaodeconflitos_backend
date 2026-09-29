@@ -12,4 +12,5 @@ public interface OccurrenceRepository extends JpaRepository<Occurrence, UUID> {
     List<Occurrence> findByUserEmailOrderByDateNowDesc(String email);
     Occurrence findFirstByUserEmailOrderByDateNowDesc(String email);
     Optional<Occurrence> findByProtocol(UUID protocol);
+    List<Occurrence> findByUserInAndStatusNot(List<User> users, String status);
 }

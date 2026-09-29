@@ -46,10 +46,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Occurrence> ocorrencias;
 
-    @OneToMany(mappedBy = "userMediator")
-    private List<Occurrence> ocorrencias_mediator;
-
-
     public void setLast_accessed(LocalDateTime last_accessed) {
         this.last_accessed = last_accessed;
     }
