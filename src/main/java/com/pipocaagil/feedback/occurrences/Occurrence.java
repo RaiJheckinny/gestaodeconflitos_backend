@@ -49,7 +49,6 @@ public class Occurrence {
     @Column(nullable = false)
     private Boolean priorit;
 
-    @Column(nullable = false)
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email")
     private User user;
