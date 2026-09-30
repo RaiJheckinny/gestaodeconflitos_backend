@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.security.Role;
 import jakarta.persistence.*;
@@ -43,6 +44,7 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime last_accessed;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Occurrence> ocorrencias;
 
