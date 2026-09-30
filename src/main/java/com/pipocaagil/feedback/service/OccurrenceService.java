@@ -44,6 +44,7 @@ public class OccurrenceService {
                 .involvedEmployee(createOccurrenceDto.involvedEmployee())
                 .description(createOccurrenceDto.description())
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
+                .priorit(false)
                 .dateNow(LocalDateTime.now().minusHours(3))
                 .status("Rascunho")
                 .title(createOccurrenceDto.title())
