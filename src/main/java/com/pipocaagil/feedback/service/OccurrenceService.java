@@ -2,13 +2,12 @@ package com.pipocaagil.feedback.service;
 
 import com.pipocaagil.feedback.occurrences.File;
 import com.pipocaagil.feedback.occurrences.Occurrence;
-import com.pipocaagil.feedback.occurrences.dto.CreateOccurrenceDto;
-import com.pipocaagil.feedback.occurrences.dto.RecoveryOccurrenceDto;
-import com.pipocaagil.feedback.occurrences.dto.RecoveryUUIDDto;
-import com.pipocaagil.feedback.occurrences.dto.UuidOccurrenceDto;
+import com.pipocaagil.feedback.occurrences.dto.*;
 import com.pipocaagil.feedback.repository.FileRepository;
 import com.pipocaagil.feedback.repository.OccurrenceRepository;
 import com.pipocaagil.feedback.repository.UserRepository;
+import com.pipocaagil.feedback.security.Role;
+import com.pipocaagil.feedback.security.RoleName;
 import com.pipocaagil.feedback.users.User;
 import com.pipocaagil.feedback.users.dto.CreateUserDto;
 import com.pipocaagil.feedback.users.dto.EmailUserDTO;
@@ -19,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,10 +45,8 @@ public class OccurrenceService {
                 .involvedEmployee(createOccurrenceDto.involvedEmployee())
                 .description(createOccurrenceDto.description())
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
-                .priorit(false)
-                .dateNow(LocalDateTime.now().minusHours(3))
-                .status("Rascunho")
                 .title(createOccurrenceDto.title())
+                .status(List.of(DateStatus.builder().name(DateStatusName.Rascunho).date(dateNow()).build()))
                 .build();
 
         if (createOccurrenceDto.protocol() != null) {
@@ -68,16 +67,10 @@ public class OccurrenceService {
         return new RecoveryUUIDDto(occurrence.getProtocol());
     }
 
-    public void updateOcurrenceAnalise(UuidOccurrenceDto protocol){
-        Occurrence occurrence = occurrenceRepository.findByProtocol(protocol.protocol()).orElse(null);
-        occurrence.setStatus("Aguardando Analise");
-        occurrenceRepository.save(occurrence);
-    }
-
     // Pega uma list das ocorrencias do usuario que passou o email
     public List<RecoveryOccurrenceDto> getOccurrenceAll(String email) {
 
-        List<Occurrence> occurrences = occurrenceRepository.findByUserEmailOrderByDateNowDesc(email);
+        List<Occurrence> occurrences = occurrenceRepository.findByUserEmailOrderByStatusDateDesc(email);
 
         return occurrences.stream()
                 .map(RecoveryOccurrenceDto::new)
@@ -86,11 +79,49 @@ public class OccurrenceService {
 
     //Pega a Ocorrencia mais recente cadastrada no banco
     public Occurrence getOccurrenceRecent(EmailUserDTO emailUserDTO){
-        return occurrenceRepository.findFirstByUserEmailOrderByDateNowDesc(emailUserDTO.email());
+        return occurrenceRepository.findFirstByUserEmailOrderByStatusDateDesc(emailUserDTO.email()).orElseThrow(() -> new RuntimeException("O usuario nao foi encontrado"));
     }
 
     public Occurrence getOccurrenceUUid(UuidOccurrenceDto uuidOccurrenceDtoDTO) {
         return occurrenceRepository.findByProtocol(uuidOccurrenceDtoDTO.protocol())
                 .orElseThrow(() -> new RuntimeException("Ocorrência não encontrada com o protocolo informado."));
+    }
+
+    public LocalDateTime dateNow(){
+        return LocalDateTime.now().minusHours(3);
+    }
+
+    public void updateOcurrenceAnalise(UuidOccurrenceDto protocolo) {
+        Occurrence occurrence = getOccurrenceUUid(protocolo);
+
+        occurrence.getStatus().add(
+                DateStatus.builder()
+                        .name(DateStatusName.Aguardando_mediação)
+                        .date(dateNow())
+                        .build()
+        );
+
+        List<User> users = userRepository.findDistinctByRolesName(RoleName.ROLE_ADMINISTRATOR);
+
+        // 1. Validação para evitar erro se não houver administradores cadastrados
+        if (users.isEmpty()) {
+            throw new RuntimeException("Nenhum usuário administrador encontrado.");
+        }
+
+        // 2. Busca o usuário com a menor lista usando Stream
+        User userComMenorLista = users.stream()
+                .min(Comparator.comparingInt(user ->
+                        user.getList_mediation() != null ? user.getList_mediation().size() : 0
+                ))
+                .orElseThrow();
+
+        // 3. Garante que a lista não seja nula antes de adicionar
+        if (userComMenorLista.getList_mediation() == null) {
+            userComMenorLista.setList_mediation(new ArrayList<>());
+        }
+
+        // 4. Adiciona a ocorrência e salva
+        userComMenorLista.getList_mediation().add(occurrence);
+        userRepository.save(userComMenorLista);
     }
 }

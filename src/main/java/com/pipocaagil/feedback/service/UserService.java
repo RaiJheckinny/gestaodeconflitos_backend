@@ -33,6 +33,9 @@ public class UserService {
     @Autowired
     private SecurityConfiguration securityConfiguration;
 
+    @Autowired
+    private OccurrenceService occurrenceService;
+
     // Método responsável por autenticar um usuário e retornar um token JWT
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
         // Cria um objeto de autenticação com o email e a senha do usuário
@@ -87,7 +90,7 @@ public class UserService {
                 .url_photo("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
                 .name(createUserDto.name())
                 .department(createUserDto.department())
-                .last_accessed(LocalDateTime.now().minusHours(3))
+                .last_accessed(occurrenceService.dateNow())
                 // Atribui ao usuário uma permissão específica
                 .roles(List.of(Role.builder().name(createUserDto.role()).build()))
                 .build();

@@ -1,5 +1,7 @@
 package com.pipocaagil.feedback.occurrences;
 
+import com.pipocaagil.feedback.occurrences.dto.DateStatus;
+import com.pipocaagil.feedback.occurrences.dto.DateStatusName;
 import com.pipocaagil.feedback.occurrences.dto.FileDTO;
 import com.pipocaagil.feedback.users.User;
 import jakarta.persistence.*;
@@ -26,9 +28,6 @@ public class Occurrence {
     @Column(nullable = false)
     private LocalDateTime dateEvent;
 
-    @Column(nullable = false)
-    private LocalDateTime dateNow;
-
     private String location;
 
     @Column(nullable = false)
@@ -41,13 +40,21 @@ public class Occurrence {
     private List<File> listFile;
 
     @Column(nullable = false)
-    private String status;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name="occurence_date_status",
+            joinColumns = @JoinColumn(name = "occurence_id"),
+            inverseJoinColumns = @JoinColumn(name="date_status_id"))
+    private List<DateStatus> status;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
-    private Boolean priorit;
+    private Integer numberConflit;
+
+    @ManyToOne
+    @JoinColumn(name = "user_mediation", referencedColumnName = "email")
+    private User user_mediation;
 
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email")

@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.security.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class User {
 
     @Id
@@ -45,6 +44,10 @@ public class User {
     private LocalDateTime last_accessed;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "user_mediation")
+    private List<Occurrence> list_mediation;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Occurrence> ocorrencias;
 
@@ -61,5 +64,4 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private List<Role> roles;
-
 }

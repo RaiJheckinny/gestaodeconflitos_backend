@@ -12,9 +12,8 @@ public record RecoveryOccurrenceDto(
         List<String> involvedEmployee,
         String description,
         List<FileDTO> listFile,
-        LocalDateTime datenow,
         UUID protocol,
-        String status,
+        List<DateStatus> status,
         String title
 ) {
     public RecoveryOccurrenceDto(Occurrence occurrence) {
@@ -29,7 +28,6 @@ public record RecoveryOccurrenceDto(
                                 file.getUrlName()
                         ))
                         .toList(),
-                occurrence.getDateNow(),
                 occurrence.getProtocol(),
                 occurrence.getStatus(),
                 occurrence.getTitle()

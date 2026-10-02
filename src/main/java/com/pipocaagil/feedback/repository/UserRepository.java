@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.repository;
 
+import com.pipocaagil.feedback.security.RoleName;
 import com.pipocaagil.feedback.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,5 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
     List<User> findByDepartment(String department);
+    List<User> findDistinctByRolesName(RoleName roleName);
 }
