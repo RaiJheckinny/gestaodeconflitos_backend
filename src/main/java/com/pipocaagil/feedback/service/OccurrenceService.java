@@ -42,6 +42,7 @@ public class OccurrenceService {
         Occurrence occurrence = Occurrence.builder()
                 .dateEvent(createOccurrenceDto.dateEvent())
                 .location(createOccurrenceDto.location())
+                .numberConflit(1)
                 .involvedEmployee(createOccurrenceDto.involvedEmployee())
                 .description(createOccurrenceDto.description())
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
