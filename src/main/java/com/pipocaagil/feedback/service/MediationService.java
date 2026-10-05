@@ -24,6 +24,9 @@ public class MediationService {
     private UserRepository userRepository;
 
     @Autowired
+    private OccurrenceService occurrenceService;
+
+    @Autowired
     private FileRepository fileRepository;
 
     public List<Occurrence> occurrencesDepartment(EmailUserDTO emailDto) {
@@ -49,8 +52,19 @@ public class MediationService {
                             .max(Comparator.comparing(DateStatus::getDate))
                             .orElse(null);
 
-                    return statusAtual != null
-                            && statusAtual.getName() != DateStatusName.Rascunho;
+                    if (statusAtual == null ||
+                            statusAtual.getName() == DateStatusName.Rascunho) {
+                        return false;
+                    }
+
+                    occurrence.getStatus().add(
+                            DateStatus.builder()
+                                    .name(DateStatusName.Ativo)
+                                    .date(occurrenceService.dateNow())
+                                    .build()
+                    );
+
+                    return true;
                 })
                 .toList();
     }
