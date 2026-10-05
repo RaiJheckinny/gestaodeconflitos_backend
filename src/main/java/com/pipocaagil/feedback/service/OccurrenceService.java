@@ -40,6 +40,7 @@ public class OccurrenceService {
     public RecoveryUUIDDto createOccurrence(CreateOccurrenceDto createOccurrenceDto) {
 
         Occurrence occurrence = Occurrence.builder()
+                .status(List.of(DateStatus.builder().name(DateStatusName.Rascunho).date(dateNow()).build()))
                 .dateEvent(createOccurrenceDto.dateEvent())
                 .location(createOccurrenceDto.location())
                 .numberConflit(1)
@@ -47,7 +48,6 @@ public class OccurrenceService {
                 .description(createOccurrenceDto.description())
                 .user(userRepository.findByEmail(createOccurrenceDto.email()).orElse(null))
                 .title(createOccurrenceDto.title())
-                .status(List.of(DateStatus.builder().name(DateStatusName.Rascunho).date(dateNow()).build()))
                 .build();
 
         if (createOccurrenceDto.protocol() != null) {

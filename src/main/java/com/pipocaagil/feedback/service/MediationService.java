@@ -1,6 +1,8 @@
 package com.pipocaagil.feedback.service;
 
 import com.pipocaagil.feedback.occurrences.Occurrence;
+import com.pipocaagil.feedback.occurrences.dto.DateStatus;
+import com.pipocaagil.feedback.occurrences.dto.DateStatusName;
 import com.pipocaagil.feedback.repository.FileRepository;
 import com.pipocaagil.feedback.repository.OccurrenceRepository;
 import com.pipocaagil.feedback.repository.UserRepository;
@@ -9,6 +11,7 @@ import com.pipocaagil.feedback.users.dto.EmailUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -23,11 +26,33 @@ public class MediationService {
     @Autowired
     private FileRepository fileRepository;
 
-    public List<Occurrence> occurrencesDepartment(EmailUserDTO emailDto){
+    public List<Occurrence> occurrencesDepartment(EmailUserDTO emailDto) {
 
-        User user = userRepository.findByEmail(emailDto.email()).orElseThrow(() -> new RuntimeException("User nao encotrado"));
+        User user = userRepository.findByEmail(emailDto.email())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
         List<User> users = userDepartment(user.getDepartment());
-        return occurrenceRepository.findByUserInAndStatusNot(users,"Rascunho");
+
+        List<Occurrence> occurrences =
+                occurrenceRepository.findByUserIn(users);
+
+        return occurrences.stream()
+                .filter(occurrence -> {
+
+                    if (occurrence.getStatus() == null ||
+                            occurrence.getStatus().isEmpty()) {
+                        return false;
+                    }
+
+                    DateStatus statusAtual = occurrence.getStatus()
+                            .stream()
+                            .max(Comparator.comparing(DateStatus::getDate))
+                            .orElse(null);
+
+                    return statusAtual != null
+                            && statusAtual.getName() != DateStatusName.Rascunho;
+                })
+                .toList();
     }
 
     public List<User> userDepartment(String department){
