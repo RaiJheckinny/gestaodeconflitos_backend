@@ -92,7 +92,6 @@ public class OccurrenceService {
         return LocalDateTime.now().minusHours(3);
     }
 
-    @Transactional
     public void updateOcurrenceAnalise(UuidOccurrenceDto protocolo) {
         Occurrence occurrence = getOccurrenceUUid(protocolo);
 
@@ -108,7 +107,7 @@ public class OccurrenceService {
         users.sort(Comparator.comparingInt(user ->
                 user.getList_mediation() == null ? 0 : user.getList_mediation().size()
         ));
-
         occurrence.setUser_mediation(users.get(0));
+        occurrenceRepository.save(occurrence);
     }
 }
