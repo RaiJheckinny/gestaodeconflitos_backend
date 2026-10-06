@@ -104,6 +104,10 @@ public class OccurrenceService {
 
         List<User> users = userRepository.findDistinctByRolesName(RoleName.ROLE_ADMINISTRATOR);
 
+        users.sort(Comparator.comparingInt(user ->
+                user.getList_mediation() == null ? 0 : user.getList_mediation().size()
+        ));
+
         occurrence.setUser_mediation(users.getFirst());
 
         occurrenceRepository.save(occurrence);

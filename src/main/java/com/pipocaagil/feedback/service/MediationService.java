@@ -30,45 +30,7 @@ public class MediationService {
     private FileRepository fileRepository;
 
     public List<Occurrence> occurrencesDepartment(EmailUserDTO emailDto) {
-
-        User user = userRepository.findByEmail(emailDto.email())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        List<User> users = userDepartment(user.getDepartment());
-
-        List<Occurrence> occurrences =
-                occurrenceRepository.findByUserIn(users);
-
-        return occurrences.stream()
-                .filter(occurrence -> {
-
-                    if (occurrence.getStatus() == null ||
-                            occurrence.getStatus().isEmpty()) {
-                        return false;
-                    }
-
-                    DateStatus statusAtual = occurrence.getStatus()
-                            .stream()
-                            .max(Comparator.comparing(DateStatus::getDate))
-                            .orElse(null);
-
-                    if (statusAtual == null ||
-                            statusAtual.getName() == DateStatusName.Rascunho) {
-                        return false;
-                    }
-
-                    occurrence.getStatus().add(
-                            DateStatus.builder()
-                                    .name(DateStatusName.Ativo)
-                                    .date(occurrenceService.dateNow())
-                                    .build()
-                    );
-
-                    occurrenceRepository.save(occurrence);
-
-                    return true;
-                })
-                .toList();
+        return userRepository.findByEmail(emailDto.email()).orElseThrow(() -> new RuntimeException("User Nao Encontrado")).getList_mediation();
     }
 
     public List<User> userDepartment(String department){
