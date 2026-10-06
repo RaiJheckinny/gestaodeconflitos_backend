@@ -92,6 +92,7 @@ public class OccurrenceService {
         return LocalDateTime.now().minusHours(3);
     }
 
+    @Transactional
     public void updateOcurrenceAnalise(UuidOccurrenceDto protocolo) {
         Occurrence occurrence = getOccurrenceUUid(protocolo);
 
@@ -116,13 +117,16 @@ public class OccurrenceService {
                 ))
                 .orElseThrow();
 
-        // 3. Garante que a lista não seja nula antes de adicionar
         if (userComMenorLista.getList_mediation() == null) {
             userComMenorLista.setList_mediation(new ArrayList<>());
         }
 
-        // 4. Adiciona a ocorrência e salva
+        // 4. ATUALIZAÇÃO: Configure o usuário na ocorrência (Lado dono da relação no JPA)
+        occurrence.setUser_mediation(userComMenorLista);
+
+        // 5. Mantém o objeto atualizado em memória (Boa prática)
         userComMenorLista.getList_mediation().add(occurrence);
-        userRepository.save(userComMenorLista);
+
+        occurrenceRepository.save(occurrence);
     }
 }
