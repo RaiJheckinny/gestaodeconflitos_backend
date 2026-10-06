@@ -26,4 +26,10 @@ public class MediationController {
         List<Occurrence> occurrences = mediationService.occurrencesDepartment(emailUserDTO);
         return new ResponseEntity<>(occurrences, HttpStatus.OK);
     }
+
+    @GetMapping("/perfil/occurrence/getAllOccurrence")
+    public ResponseEntity<List<Occurrence>> getOccurrenceRecent() {
+        List<Occurrence> occurrences = mediationService.occurrencesAll();
+        return new ResponseEntity<>(occurrences, HttpStatus.OK);
+    }
 }

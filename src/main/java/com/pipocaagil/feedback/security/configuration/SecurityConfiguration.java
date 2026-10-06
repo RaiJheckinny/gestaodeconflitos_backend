@@ -45,7 +45,8 @@ public class SecurityConfiguration {
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String [] ENDPOINTS_ADMIN = {
             "/mediation/perfil/occurrence/getUser*",
-            "/users/test/administrator"
+            "/users/test/administrator",
+            "/mediation/perfil/occurrence/getAllOccurrence"
     };
 
     @Bean
