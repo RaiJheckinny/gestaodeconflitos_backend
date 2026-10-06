@@ -62,7 +62,6 @@ public class UserService {
         return user != null;
     }
 
-    @Transactional
     public void atualizarAcessoUsuario(LoginUserDto loginUserDto) {
         // 1. Busca o usuário pelo e-mail do DTO
         User user = userRepository.findByEmail(loginUserDto.email())

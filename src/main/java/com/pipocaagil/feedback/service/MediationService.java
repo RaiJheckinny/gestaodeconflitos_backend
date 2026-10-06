@@ -30,7 +30,6 @@ public class MediationService {
     @Autowired
     private FileRepository fileRepository;
 
-    @Transactional
     public List<Occurrence> occurrencesDepartment(EmailUserDTO emailDto) {
         List<Occurrence> occurrences = userRepository.findByEmail(emailDto.email()).orElseThrow(() -> new RuntimeException("User Nao Encontrado")).getList_mediation();
         for (Occurrence occurrence : occurrences) {

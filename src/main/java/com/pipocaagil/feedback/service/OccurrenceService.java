@@ -92,7 +92,6 @@ public class OccurrenceService {
         return LocalDateTime.now().minusHours(3);
     }
 
-    @Transactional
     public void updateOcurrenceAnalise(UuidOccurrenceDto protocolo) {
         Occurrence occurrence = getOccurrenceUUid(protocolo);
 
