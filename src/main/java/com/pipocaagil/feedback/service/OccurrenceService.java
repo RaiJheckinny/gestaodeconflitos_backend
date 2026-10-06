@@ -108,7 +108,7 @@ public class OccurrenceService {
                 user.getList_mediation() == null ? 0 : user.getList_mediation().size()
         ));
 
-        occurrence.setUser_mediation(users.getFirst());
+        occurrence.setUser_mediation(users.get(0));
 
         occurrenceRepository.save(occurrence);
     }
