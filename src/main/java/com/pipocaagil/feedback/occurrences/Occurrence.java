@@ -39,12 +39,13 @@ public class Occurrence {
     @OneToMany(mappedBy = "occurrence", cascade = CascadeType.ALL)
     private List<File> listFile;
 
-    @Column(nullable = false)
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name="occurence_date_status",
-            joinColumns = @JoinColumn(name = "occurence_id"),
-            inverseJoinColumns = @JoinColumn(name="date_status_id"))
-    private List<DateStatus> status;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "occurrence_id")
+    private List<DateStatus> status = new ArrayList<>();
 
     @Column(nullable = false)
     private String title;
