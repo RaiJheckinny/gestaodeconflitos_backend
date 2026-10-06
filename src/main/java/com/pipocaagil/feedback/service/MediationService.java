@@ -38,6 +38,7 @@ public class MediationService {
                             .date(occurrenceService.dateNow())
                             .build()
             );
+            occurrenceRepository.save(occurrence);
         }
         return occurrences;
     }
