@@ -92,6 +92,7 @@ public class OccurrenceService {
         return LocalDateTime.now().minusHours(3);
     }
 
+    @Transactional
     public void updateOcurrenceAnalise(UuidOccurrenceDto protocolo) {
         Occurrence occurrence = getOccurrenceUUid(protocolo);
 
@@ -109,7 +110,5 @@ public class OccurrenceService {
         ));
 
         occurrence.setUser_mediation(users.get(0));
-
-        occurrenceRepository.save(occurrence);
     }
 }
