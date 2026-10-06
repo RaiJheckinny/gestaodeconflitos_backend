@@ -92,7 +92,6 @@ public class OccurrenceService {
         return LocalDateTime.now().minusHours(3);
     }
 
-    @Transactional
     public void updateOcurrenceAnalise(UuidOccurrenceDto protocolo) {
         Occurrence occurrence = getOccurrenceUUid(protocolo);
 
@@ -105,27 +104,7 @@ public class OccurrenceService {
 
         List<User> users = userRepository.findDistinctByRolesName(RoleName.ROLE_ADMINISTRATOR);
 
-        // 1. Validação para evitar erro se não houver administradores cadastrados
-        if (users.isEmpty()) {
-            throw new RuntimeException("Nenhum usuário administrador encontrado.");
-        }
-
-        // 2. Busca o usuário com a menor lista usando Stream
-        User userComMenorLista = users.stream()
-                .min(Comparator.comparingInt(user ->
-                        user.getList_mediation() != null ? user.getList_mediation().size() : 0
-                ))
-                .orElseThrow();
-
-        if (userComMenorLista.getList_mediation() == null) {
-            userComMenorLista.setList_mediation(new ArrayList<>());
-        }
-
-        // 4. ATUALIZAÇÃO: Configure o usuário na ocorrência (Lado dono da relação no JPA)
-        occurrence.setUser_mediation(userComMenorLista);
-
-        // 5. Mantém o objeto atualizado em memória (Boa prática)
-        userComMenorLista.getList_mediation().add(occurrence);
+        occurrence.setUser_mediation(users.getFirst());
 
         occurrenceRepository.save(occurrence);
     }
