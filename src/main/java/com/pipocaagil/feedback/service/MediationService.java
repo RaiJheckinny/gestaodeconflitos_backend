@@ -8,6 +8,7 @@ import com.pipocaagil.feedback.repository.OccurrenceRepository;
 import com.pipocaagil.feedback.repository.UserRepository;
 import com.pipocaagil.feedback.users.User;
 import com.pipocaagil.feedback.users.dto.EmailUserDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class MediationService {
     @Autowired
     private FileRepository fileRepository;
 
+    @Transactional
     public List<Occurrence> occurrencesDepartment(EmailUserDTO emailDto) {
         List<Occurrence> occurrences = userRepository.findByEmail(emailDto.email()).orElseThrow(() -> new RuntimeException("User Nao Encontrado")).getList_mediation();
         for (Occurrence occurrence : occurrences) {
