@@ -64,6 +64,8 @@ public class MediationService {
                                     .build()
                     );
 
+                    occurrenceRepository.save(occurrence);
+
                     return true;
                 })
                 .toList();
