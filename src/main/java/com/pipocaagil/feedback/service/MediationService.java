@@ -31,16 +31,31 @@ public class MediationService {
     private FileRepository fileRepository;
 
     public List<Occurrence> occurrencesDepartment(EmailUserDTO emailDto) {
-        List<Occurrence> occurrences = userRepository.findByEmail(emailDto.email()).orElseThrow(() -> new RuntimeException("User Nao Encontrado")).getList_mediation();
+
+        List<Occurrence> occurrences = userRepository
+                .findByEmail(emailDto.email())
+                .orElseThrow(() -> new RuntimeException("User Não Encontrado"))
+                .getList_mediation();
+
         for (Occurrence occurrence : occurrences) {
-            occurrence.getStatus().add(
-                    DateStatus.builder()
-                            .name(DateStatusName.Ativo)
-                            .date(occurrenceService.dateNow())
-                            .build()
-            );
-            occurrenceRepository.save(occurrence);
+
+            boolean jaPossuiAtivo = occurrence.getStatus()
+                    .stream()
+                    .anyMatch(status -> status.getName() == DateStatusName.Ativo);
+
+            if (!jaPossuiAtivo) {
+
+                occurrence.getStatus().add(
+                        DateStatus.builder()
+                                .name(DateStatusName.Ativo)
+                                .date(occurrenceService.dateNow())
+                                .build()
+                );
+
+                occurrenceRepository.save(occurrence);
+            }
         }
+
         return occurrences;
     }
 
