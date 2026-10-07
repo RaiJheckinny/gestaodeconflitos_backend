@@ -19,6 +19,7 @@ public class DateStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private DateStatusName name;
 
     private LocalDateTime date;

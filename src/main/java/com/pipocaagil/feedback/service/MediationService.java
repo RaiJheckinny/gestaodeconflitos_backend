@@ -39,18 +39,18 @@ public class MediationService {
 
         for (Occurrence occurrence : occurrences) {
 
-            boolean jaPossuiAtivo = occurrence.getStatus()
+            boolean possuiAtivo = occurrence.getStatus()
                     .stream()
-                    .anyMatch(status -> status.getName() == DateStatusName.Ativo);
+                    .anyMatch(status -> DateStatusName.Ativo.equals(status.getName()));
 
-            if (!jaPossuiAtivo) {
+            if (!possuiAtivo) {
 
-                occurrence.getStatus().add(
-                        DateStatus.builder()
-                                .name(DateStatusName.Ativo)
-                                .date(occurrenceService.dateNow())
-                                .build()
-                );
+                DateStatus novoStatus = DateStatus.builder()
+                        .name(DateStatusName.Ativo)
+                        .date(occurrenceService.dateNow())
+                        .build();
+
+                occurrence.getStatus().add(novoStatus);
 
                 occurrenceRepository.save(occurrence);
             }
