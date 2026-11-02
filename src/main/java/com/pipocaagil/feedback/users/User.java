@@ -1,6 +1,7 @@
 package com.pipocaagil.feedback.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pipocaagil.feedback.notification.Notification;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.security.Role;
 import jakarta.persistence.*;
@@ -58,7 +59,9 @@ public class User {
     @Column(nullable = false)
     private String url_photo;
 
-    private List<String> notification;
+    @JsonIgnore
+    @OneToMany(mappedBy = "notification")
+    private List<Notification> notification;
 
     @Column(nullable = false)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)

@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.service;
 
+import com.pipocaagil.feedback.notification.Notification;
 import com.pipocaagil.feedback.occurrences.File;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.occurrences.dto.*;
@@ -108,7 +109,13 @@ public class OccurrenceService {
                 user.getList_mediation() == null ? 0 : user.getList_mediation().size()
         ));
         occurrence.setUser_mediation(users.get(0));
-        users.get(0).getNotification().set(0,"Ocorrencia Direciona a Voce");
+
+        Notification notification = new Notification().builder()
+                .read(false)
+                .message("Um Nova Ocorrencia Direciona a voce")
+                .build();
+
+        users.get(0).getNotification().set(0,notification);
         userRepository.save(users.get(0));
         occurrenceRepository.save(occurrence);
     }
