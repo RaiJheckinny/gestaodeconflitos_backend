@@ -58,6 +58,8 @@ public class User {
     @Column(nullable = false)
     private String url_photo;
 
+    private List<String> notification;
+
     @Column(nullable = false)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name="users_roles",

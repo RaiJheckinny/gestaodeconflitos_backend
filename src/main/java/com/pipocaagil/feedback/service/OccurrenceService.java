@@ -108,6 +108,8 @@ public class OccurrenceService {
                 user.getList_mediation() == null ? 0 : user.getList_mediation().size()
         ));
         occurrence.setUser_mediation(users.get(0));
+        users.get(0).getNotification().set(0,"Ocorrencia Direciona a Voce");
+        userRepository.save(users.get(0));
         occurrenceRepository.save(occurrence);
     }
 }

@@ -58,7 +58,6 @@ public class MediationService {
 
         return occurrences;
     }
-
     public List<User> userDepartment(String department){
         return userRepository.findByDepartment(department);
     }
