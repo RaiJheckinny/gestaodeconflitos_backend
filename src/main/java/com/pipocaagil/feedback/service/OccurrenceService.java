@@ -115,7 +115,7 @@ public class OccurrenceService {
                 .message("Um Nova Ocorrencia Direciona a voce")
                 .build();
 
-        users.get(0).getNotification().set(0,notification);
+        users.get(0).getNotification().add(0,notification);
         userRepository.save(users.get(0));
         occurrenceRepository.save(occurrence);
     }
