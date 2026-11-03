@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.service;
 
+import com.pipocaagil.feedback.notification.Notification;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.occurrences.dto.DateStatus;
 import com.pipocaagil.feedback.occurrences.dto.DateStatusName;
@@ -64,5 +65,10 @@ public class MediationService {
 
     public List<Occurrence> occurrencesAll() {
         return occurrenceRepository.findAll();
+    }
+
+    public List<Notification> getAllNotification(String email){
+        User user = userRepository.findByEmail(email).orElse(null);
+        return user.getNotification();
     }
 }

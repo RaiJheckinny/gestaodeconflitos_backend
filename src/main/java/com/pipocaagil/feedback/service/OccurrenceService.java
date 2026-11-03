@@ -120,6 +120,7 @@ public class OccurrenceService {
                 .read(false)
                 .date(dateNow())
                 .message("Uma nova ocorrência foi direcionada a você")
+                .user(mediator)
                 .build();
 
         mediator.getNotification().add(0, notification);

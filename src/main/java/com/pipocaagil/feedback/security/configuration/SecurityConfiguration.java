@@ -46,7 +46,8 @@ public class SecurityConfiguration {
     public static final String [] ENDPOINTS_ADMIN = {
             "/mediation/perfil/occurrence/getUser*",
             "/users/test/administrator",
-            "/mediation/perfil/occurrence/getAllOccurrence"
+            "/mediation/perfil/occurrence/getAllOccurrence",
+            "/mediation/perfil/notification/getAll"
     };
 
     @Bean

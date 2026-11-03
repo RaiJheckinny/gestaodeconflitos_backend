@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.controller;
 
+import com.pipocaagil.feedback.notification.Notification;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.occurrences.dto.RecoveryOccurrenceDto;
 import com.pipocaagil.feedback.service.MediationService;
@@ -31,5 +32,11 @@ public class MediationController {
     public ResponseEntity<List<Occurrence>> getOccurrenceRecent() {
         List<Occurrence> occurrences = mediationService.occurrencesAll();
         return new ResponseEntity<>(occurrences, HttpStatus.OK);
+    }
+
+    @GetMapping("/perfil/notification/getAll")
+    public ResponseEntity<List<Notification>> getNotificationAll(EmailUserDTO emailUserDTO ) {
+        List<Notification> notifications = mediationService.getAllNotification(emailUserDTO.email());
+        return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 }
