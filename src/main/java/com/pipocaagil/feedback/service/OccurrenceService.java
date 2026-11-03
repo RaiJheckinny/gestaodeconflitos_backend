@@ -108,15 +108,22 @@ public class OccurrenceService {
         users.sort(Comparator.comparingInt(user ->
                 user.getList_mediation() == null ? 0 : user.getList_mediation().size()
         ));
-        occurrence.setUser_mediation(users.get(0));
 
-        Notification notification = new Notification().builder()
+        // Seleciona o usuário que receberá a ocorrência
+        User mediator = users.get(0);
+
+        // Vincula a ocorrência ao mediador
+        occurrence.setUser_mediation(mediator);
+
+        // Cria a notificação para o mesmo mediador
+        Notification notification = Notification.builder()
                 .read(false)
-                .message("Um Nova Ocorrencia Direciona a voce")
+                .message("Uma nova ocorrência foi direcionada a você")
                 .build();
 
-        users.get(0).getNotification().add(0,notification);
-        userRepository.save(users.get(0));
+        mediator.getNotification().add(0, notification);
+
+        userRepository.save(mediator);
         occurrenceRepository.save(occurrence);
     }
 }
