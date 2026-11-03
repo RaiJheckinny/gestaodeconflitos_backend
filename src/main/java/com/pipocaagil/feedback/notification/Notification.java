@@ -4,6 +4,7 @@ import com.pipocaagil.feedback.users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Table(name = "notification")
@@ -23,6 +24,9 @@ public class Notification {
 
     @Column(nullable = false)
     private boolean read;
+
+    @Column(nullable = false)
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

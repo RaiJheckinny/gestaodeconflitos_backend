@@ -118,6 +118,7 @@ public class OccurrenceService {
         // Cria a notificação para o mesmo mediador
         Notification notification = Notification.builder()
                 .read(false)
+                .date(dateNow())
                 .message("Uma nova ocorrência foi direcionada a você")
                 .build();
 
