@@ -60,8 +60,9 @@ public class User {
     private String url_photo;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "notification")
-    private List<Notification> notification;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OrderBy("date DESC")
+    private List<Notification> notification = new ArrayList<>();
 
     @Column(nullable = false)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)

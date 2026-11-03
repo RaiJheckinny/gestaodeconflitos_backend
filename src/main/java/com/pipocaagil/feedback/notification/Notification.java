@@ -25,6 +25,6 @@ public class Notification {
     private boolean read;
 
     @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private User notification;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
