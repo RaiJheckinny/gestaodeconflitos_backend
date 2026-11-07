@@ -4,6 +4,7 @@ import com.pipocaagil.feedback.notification.Notification;
 import com.pipocaagil.feedback.occurrences.Occurrence;
 import com.pipocaagil.feedback.occurrences.dto.DateStatus;
 import com.pipocaagil.feedback.occurrences.dto.DateStatusName;
+import com.pipocaagil.feedback.occurrences.dto.OccurrenceUUIDDTO;
 import com.pipocaagil.feedback.repository.FileRepository;
 import com.pipocaagil.feedback.repository.OccurrenceRepository;
 import com.pipocaagil.feedback.repository.UserRepository;
@@ -37,26 +38,6 @@ public class MediationService {
                 .findByEmail(emailDto.email())
                 .orElseThrow(() -> new RuntimeException("User Não Encontrado"))
                 .getList_mediation();
-
-        for (Occurrence occurrence : occurrences) {
-
-            boolean possuiAtivo = occurrence.getStatus()
-                    .stream()
-                    .anyMatch(status -> DateStatusName.Ativo.equals(status.getName()));
-
-            if (!possuiAtivo) {
-
-                DateStatus novoStatus = DateStatus.builder()
-                        .name(DateStatusName.Ativo)
-                        .date(occurrenceService.dateNow())
-                        .build();
-
-                occurrence.getStatus().add(novoStatus);
-
-                occurrenceRepository.save(occurrence);
-            }
-        }
-
         return occurrences;
     }
     public List<User> userDepartment(String department){
@@ -67,8 +48,22 @@ public class MediationService {
         return occurrenceRepository.findAll();
     }
 
-    public List<Notification> getAllNotification(String email){
-        User user = userRepository.findByEmail(email).orElse(null);
-        return user.getNotification();
-    }
+    public void upateOcurrenceAtivo(OccurrenceUUIDDTO id){
+        Occurrence occurrence = occurrenceRepository.findByProtocol(id.id()).orElseThrow(() -> new RuntimeException("Occurence não encontrada com o ID: " + id.id()));
+
+            boolean possuiAtivo = occurrence.getStatus()
+                    .stream()
+                    .anyMatch(status -> DateStatusName.Ativo.equals(status.getName()));
+
+            if (!possuiAtivo) {
+                DateStatus novoStatus = DateStatus.builder()
+                        .name(DateStatusName.Ativo)
+                        .date(occurrenceService.dateNow())
+                        .build();
+
+                occurrence.getStatus().add(novoStatus);
+                occurrenceRepository.save(occurrence);
+            }
+            }
+
 }

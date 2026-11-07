@@ -2,10 +2,12 @@ package com.pipocaagil.feedback.controller;
 
 import com.pipocaagil.feedback.notification.Notification;
 import com.pipocaagil.feedback.occurrences.Occurrence;
+import com.pipocaagil.feedback.occurrences.dto.OccurrenceUUIDDTO;
 import com.pipocaagil.feedback.occurrences.dto.RecoveryOccurrenceDto;
 import com.pipocaagil.feedback.service.MediationService;
 import com.pipocaagil.feedback.service.OccurrenceService;
 import com.pipocaagil.feedback.users.dto.EmailUserDTO;
+import com.pipocaagil.feedback.users.dto.RecoveryUserEmailNameDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +36,9 @@ public class MediationController {
         return new ResponseEntity<>(occurrences, HttpStatus.OK);
     }
 
-    @GetMapping("/perfil/notification/getAll")
-    public ResponseEntity<List<Notification>> getNotificationAll(EmailUserDTO emailUserDTO ) {
-        List<Notification> notifications = mediationService.getAllNotification(emailUserDTO.email());
-        return new ResponseEntity<>(notifications, HttpStatus.OK);
+    @GetMapping("/perfil/upateOcurrenceAtivo")
+    public ResponseEntity<Void> upateOcurrenceAtivo(OccurrenceUUIDDTO id) {
+        mediationService.upateOcurrenceAtivo(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

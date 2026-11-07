@@ -1,5 +1,7 @@
 package com.pipocaagil.feedback.service;
 
+import com.pipocaagil.feedback.notification.Notification;
+import com.pipocaagil.feedback.repository.NotificationRepository;
 import com.pipocaagil.feedback.repository.UserRepository;
 import com.pipocaagil.feedback.security.Role;
 import com.pipocaagil.feedback.security.UserDetailsImpl;
@@ -35,6 +37,9 @@ public class UserService {
 
     @Autowired
     private OccurrenceService occurrenceService;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     // Método responsável por autenticar um usuário e retornar um token JWT
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
@@ -123,5 +128,24 @@ public class UserService {
             );
         }
         return userEmailName;
+    }
+
+    public List<Notification> getAllNotification(String email){
+        User user = userRepository.findByEmail(email).orElse(null);
+        return user.getNotification();
+    }
+
+    public Void updateSent(NotificationUUIDDTO id){
+        Notification notification = notificationRepository.findById(id.id()).orElseThrow(() -> new RuntimeException("Notificação não encontrada com o ID: " + id.id()));
+        notification.setSent(true);
+        notificationRepository.save(notification);
+        return null;
+    }
+
+    public Void updateSentStartup(NotificationUUIDDTO id){
+        Notification notification = notificationRepository.findById(id.id()).orElseThrow(() -> new RuntimeException("Notificação não encontrada com o ID: " + id.id()));
+        notification.setSentStartup(true);
+        notificationRepository.save(notification);
+        return null;
     }
 }

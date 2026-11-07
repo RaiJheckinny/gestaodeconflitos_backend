@@ -1,5 +1,6 @@
 package com.pipocaagil.feedback.controller;
 
+import com.pipocaagil.feedback.notification.Notification;
 import com.pipocaagil.feedback.service.UserService;
 import com.pipocaagil.feedback.users.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,22 @@ public class UserController {
         return new ResponseEntity<>("Administrador autenticado com sucesso", HttpStatus.OK);
     }
 
-    @GetMapping("/perfil/userNameEmail")
-    public ResponseEntity<List<RecoveryUserEmailNameDTO>> getUser() {
-        List<RecoveryUserEmailNameDTO> recoveryUserEmailNameDto = userService.getUserEmailName();
-
-        return new ResponseEntity<>(recoveryUserEmailNameDto, HttpStatus.OK);
+    @GetMapping("/perfil/notification/getAll")
+    public ResponseEntity<List<Notification>> getNotificationAll(EmailUserDTO emailUserDTO ) {
+        List<Notification> notifications = userService.getAllNotification(emailUserDTO.email());
+        return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 
+    @GetMapping("/perfil/updateSent")
+    public ResponseEntity<Void> updateSent(NotificationUUIDDTO id) {
+        userService.updateSent(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/perfil/upadatSentStartup")
+    public ResponseEntity<Void> upadatSentStartup(NotificationUUIDDTO id) {
+        userService.updateSentStartup(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

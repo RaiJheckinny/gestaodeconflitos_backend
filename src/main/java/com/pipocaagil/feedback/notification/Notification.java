@@ -19,11 +19,20 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true,nullable = false)
-    private String message;
+    @Column(nullable = false)
+    private UUID occurenceProtocol;
 
     @Column(nullable = false)
-    private boolean read;
+    private String title;
+
+    @Column(nullable = false)
+    private String descrition;
+
+    @Column(nullable = false)
+    private boolean sent;
+
+    @Column(nullable = false)
+    private boolean sentStartup;
 
     @Column(nullable = false)
     private LocalDateTime date;
