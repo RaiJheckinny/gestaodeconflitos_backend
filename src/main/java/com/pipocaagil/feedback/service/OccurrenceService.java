@@ -128,7 +128,6 @@ public class OccurrenceService {
 
         mediator.getNotification().add(0, notification);
 
-        userRepository.save(mediator);
         occurrenceRepository.save(occurrence);
     }
 }

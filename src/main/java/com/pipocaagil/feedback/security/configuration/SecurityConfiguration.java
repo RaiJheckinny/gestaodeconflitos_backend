@@ -34,7 +34,10 @@ public class SecurityConfiguration {
             "/users/perfil/occurrence/getAll",
             "/users/perfil/userNameEmail",
             "/users/perfil/occurrence/getuuid*",
-            "/users/perfil/occurrence/submissionforreview"
+            "/users/perfil/occurrence/submissionforreview",
+            "/users/perfil/notification/getAll",
+            "/users/perfil/updateSent",
+            "/users/perfil/upadatSentStartup"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
@@ -47,7 +50,7 @@ public class SecurityConfiguration {
             "/mediation/perfil/occurrence/getUser*",
             "/users/test/administrator",
             "/mediation/perfil/occurrence/getAllOccurrence",
-            "/mediation/perfil/notification/getAll"
+            "/mediation/perfil/upateOcurrenceAtivo",
     };
 
     @Bean
