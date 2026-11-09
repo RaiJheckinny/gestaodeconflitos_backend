@@ -11,9 +11,7 @@ import com.pipocaagil.feedback.users.dto.RecoveryUserEmailNameDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,8 +34,8 @@ public class MediationController {
         return new ResponseEntity<>(occurrences, HttpStatus.OK);
     }
 
-    @GetMapping("/perfil/upateOcurrenceAtivo")
-    public ResponseEntity<Void> upateOcurrenceAtivo(OccurrenceUUIDDTO id) {
+    @PostMapping("/perfil/upateOcurrenceAtivo")
+    public ResponseEntity<Void> upateOcurrenceAtivo(@RequestBody OccurrenceUUIDDTO id) {
         mediationService.upateOcurrenceAtivo(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

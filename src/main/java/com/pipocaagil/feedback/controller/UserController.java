@@ -66,14 +66,14 @@ public class UserController {
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 
-    @GetMapping("/perfil/updateSent")
-    public ResponseEntity<Void> updateSent(NotificationUUIDDTO id) {
+    @PostMapping("/perfil/updateSent")
+    public ResponseEntity<Void> updateSent(@RequestBody NotificationUUIDDTO id) {
         userService.updateSent(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/perfil/upadatSentStartup")
-    public ResponseEntity<Void> upadatSentStartup(NotificationUUIDDTO id) {
+    @PostMapping("/perfil/upadatSentStartup")
+    public ResponseEntity<Void> upadatSentStartup(@RequestBody NotificationUUIDDTO id) {
         userService.updateSentStartup(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
